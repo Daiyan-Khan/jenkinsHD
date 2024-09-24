@@ -24,7 +24,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install necessary dependencies, if any
-                sh 'pip install -r pytest pylint flake8 black'  // Ensure you have a requirements.txt file
+                sh 'pip install pytest'  // Ensure you have a requirements.txt file
             }
         }
 
