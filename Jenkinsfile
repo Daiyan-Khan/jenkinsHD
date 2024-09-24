@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Task: Checkout the source code from GitHub
-                git url: 'https://github.com/myhuy612/SIT223-6.2HD-DevOps-Pipeline.git', branch: 'main'
+                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
