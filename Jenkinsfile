@@ -12,25 +12,27 @@ pipeline {
                 git url: 'https://github.com/myhuy612/SIT223-6.2HD-DevOps-Pipeline.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
+        }
+
         stage('Setup Python Environment') {
             steps {
                 // Create a virtual environment
-                sh 'python -m venv $PYTHON_ENV'
-                bat "$PYTHON_ENV\\Scripts\\activate.bat"  // Correct activation for Windows
+                bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Install necessary dependencies, if any
-                sh 'pip install -r requirements.txt'  // Ensure you have a requirements.txt file
+                // Install necessary dependencies
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install -r requirements.txt'  // Ensure virtual environment is activated
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
-                sh 'pytest'  // Example using pytest, adjust if you use a different testing framework
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pytest'  // Example using pytest
             }
         }
 
