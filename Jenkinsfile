@@ -28,13 +28,13 @@ pipeline {
             steps {
                 script {
                     // Activate the virtual environment and run Pylint
-                    sh 'venv/Scripts/activate && pylint your_module_name'
+                    sh 'venv/Scripts/activate && pylint snakegame.py'
                     
                     // Run Flake8
-                    sh 'venv/Scripts/activate && flake8 your_module_name'
+                    sh 'venv/Scripts/activate && flake8 snakegame.py'
                     
                     // Format code using Black
-                    sh 'venv/Scripts/activate && black your_module_name'
+                    sh 'venv/Scripts/activate && black snakegame.py'
                 }
             }
         }
