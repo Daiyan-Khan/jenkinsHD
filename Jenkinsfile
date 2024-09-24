@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Task: Checkout the source code from GitHub
-                git url: 'https://github.com/myhuy612/SIT223-6.2HD-DevOps-Pipeline.git', branch: 'main'
+                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
@@ -19,6 +19,13 @@ pipeline {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
                 bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
+            }
+        }
+
+        stage('Install pytest') {
+            steps {
+                // Install pytest as a testing framework
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pytest'
             }
         }
 
