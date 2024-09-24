@@ -20,7 +20,7 @@ pipeline {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
                 bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
-                sh 'venv/Scripts/activate && pip install -r requirements.txt'
+                sh 'venv/Scripts/activate && pip install pytest pylint flake8 black'
             }
         }
 
