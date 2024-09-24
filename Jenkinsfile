@@ -6,43 +6,32 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Task: Checkout the source code from GitHub
-                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
-                echo "Code has been checked out from GitHub"
-                
+                // Checkout the code from the repository
+                git 'https://github.com/Daiyan-Khan/snake_game.git'  // Replace with your repo URL
             }
         }
 
         stage('Setup Python Environment') {
             steps {
-                // Create a virtual environment
-                bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
-                sh 'venv/Scripts/activate && pip install pytest pylint flake8 black'
+                // Create and activate a virtual environment
+                sh 'python3 -m venv $PYTHON_ENV'
+                sh '. $PYTHON_ENV/bin/activate'
             }
         }
 
-        stage('Run Code Quality Checks') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    // Activate the virtual environment and run Pylint
-                    sh 'venv/Scripts/activate && pylint snakegame.py'
-                    
-                    // Run Flake8
-                    sh 'venv/Scripts/activate && flake8 snakegame.py'
-                    
-                    // Format code using Black
-                    sh 'venv/Scripts/activate && black snakegame.py'
-                }
+                // Install necessary dependencies, if any
+                sh 'pip install -r pytest pylint flake8 black'  // Ensure you have a requirements.txt file
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
+                sh 'python test.py'  // Example using pytest, adjust if you use a different testing framework
             }
         }
 
