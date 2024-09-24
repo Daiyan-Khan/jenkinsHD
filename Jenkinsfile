@@ -22,13 +22,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                // Install necessary dependencies
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install -r requirements.txt'  // Ensure virtual environment is activated
-            }
-        }
-
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
