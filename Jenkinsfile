@@ -11,6 +11,7 @@ pipeline {
                 // Task: Checkout the source code from GitHub
                 git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
+                
             }
         }
 
@@ -19,13 +20,22 @@ pipeline {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
                 bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
+                sh 'venv/Scripts/activate && pip install -r requirements.txt'
             }
         }
 
-        stage('Install pytest') {
+        stage('Run Code Quality Checks') {
             steps {
-                // Install pytest as a testing framework
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pytest'
+                script {
+                    // Activate the virtual environment and run Pylint
+                    sh 'venv/Scripts/activate && pylint your_module_name'
+                    
+                    // Run Flake8
+                    sh 'venv/Scripts/activate && flake8 your_module_name'
+                    
+                    // Format code using Black
+                    sh 'venv/Scripts/activate && black your_module_name'
+                }
             }
         }
 
