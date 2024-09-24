@@ -9,9 +9,9 @@ pipeline {
 
         stage('Setup Python Environment') {
             steps {
-                // Create and activate a virtual environment
-                sh 'python3 -m venv $PYTHON_ENV'
-                sh '. $PYTHON_ENV/bin/activate'
+                // Create a virtual environment
+                sh 'python -m venv $PYTHON_ENV'
+                bat "$PYTHON_ENV\\Scripts\\activate.bat"  // Correct activation for Windows
             }
         }
 
