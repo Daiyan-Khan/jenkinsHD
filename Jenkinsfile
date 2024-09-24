@@ -22,17 +22,17 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install pytest') {
             steps {
-                // Install necessary dependencies
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install -r requirements.txt'  // Ensure virtual environment is activated
+                // Install pytest as a testing framework
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pytest'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run your tests (ensure virtual environment is activated)
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Running your test script
+                // Run your tests (add your test command here)
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
             }
         }
 
