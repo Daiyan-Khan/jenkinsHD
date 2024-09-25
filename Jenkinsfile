@@ -10,6 +10,7 @@ pipeline {
             steps {
                 // Task: Checkout the source code from GitHub
                 git url: 'https://github.com/myhuy612/SIT223-6.2HD-DevOps-Pipeline.git', branch: 'main'
+                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
@@ -52,3 +53,14 @@ pipeline {
 
     post {
         success {
+            echo 'Build and Tests passed!'
+        }
+        failure {
+            echo 'Build or Tests failed!'
+        }
+        always {
+            // Cleanup actions if needed
+            echo 'Cleaning up...'
+        }
+    }
+}
