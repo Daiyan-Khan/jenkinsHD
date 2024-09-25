@@ -1,65 +1,52 @@
 pipeline {
-    agent any  // Use any available agent
+    agent any
 
     environment {
+        DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Change this to your desired Docker image name
         PYTHON_ENV = "venv"  // Define the Python environment
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Task: Checkout the source code from GitHub
-                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'
+                // Checkout the code from your version control system
+                git url: 'https://github.com/Daiyan-Khan/jMultivariate_appartment_prices_prediction.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
-
-        stage('Setup Python Environment') {
+        stage('Install Dependencies') {
             steps {
-                // Create a virtual environment
-                bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
+                // Install Python and necessary packages
+                bat '''
+                call %PYTHON_ENV%\\Scripts\\activate.bat && pip install -r requirements.txt
+                '''
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    bat "docker build -t ${DOCKER_IMAGE} ."
+                }
             }
         }
 
-        stage('Install pytest') {
-            steps {
-                // Install pytest as a testing framework
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pytest'
-            }
-        }
         stage('Run Tests') {
             steps {
-                // Run your tests (add your test command here)
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
+                // Run your pytest tests
+                bat '''
+                venv\\Scripts\\activate.bat
+                pytest test_multivariate_linear_reg.py
+                '''
             }
         }
 
-        stage('Build') {
-            steps {
-                // If you have a build step, add it here
-                echo 'Building the application...'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Deploy your application (add your deployment steps here)
-                echo 'Deploying the application...'
-            }
-        }
     }
 
     post {
-        success {
-            echo 'Build and Tests passed!'
-        }
-        failure {
-            echo 'Build or Tests failed!'
-        }
         always {
-            // Cleanup actions if needed
-            echo 'Cleaning up...'
+            // Clean up any Docker images (optional)
+            bat "docker rmi ${DOCKER_IMAGE} || exit 0"
         }
     }
 }
