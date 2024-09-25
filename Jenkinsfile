@@ -6,32 +6,32 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                // Checkout the code from the repository
-                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'  // Replace with your repo URL
+                // Task: Checkout the source code from GitHub
+                git url: 'https://github.com/myhuy612/SIT223-6.2HD-DevOps-Pipeline.git', branch: 'main'
+                echo "Code has been checked out from GitHub"
             }
         }
 
         stage('Setup Python Environment') {
             steps {
-                // Create and activate a virtual environment
-                sh 'python3 -m venv $PYTHON_ENV'
-                sh '. $PYTHON_ENV/bin/activate'
+                // Create a virtual environment
+                bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install pytest') {
             steps {
-                // Install necessary dependencies, if any
-                sh 'pip install pytest'  // Ensure you have a requirements.txt file
+                // Install pytest as a testing framework
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pytest'
             }
         }
-
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
-                sh 'python test.py'  // Example using pytest, adjust if you use a different testing framework
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pytest'  // Example using pytest
             }
         }
 
@@ -52,14 +52,3 @@ pipeline {
 
     post {
         success {
-            echo 'Build and Tests passed!'
-        }
-        failure {
-            echo 'Build or Tests failed!'
-        }
-        always {
-            // Cleanup actions if needed
-            echo 'Cleaning up...'
-        }
-    }
-}
