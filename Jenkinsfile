@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the repository
-                git 'https://github.com/Daiyan-Khan/snake_game.git'  // Replace with your repo URL
+                git url: 'https://github.com/Daiyan-Khan/jenkinsHD.git', branch: 'main'  // Replace with your repo URL
             }
         }
 
